@@ -1,0 +1,2 @@
+(([Ii]ssues?:?(\s*(,|and)?\s*#\d+)+)|(\((Fixes|Closes|Resolves) issue #?\d+\))|((Fixes|Closes|Resolves) issue #?\d+\.)|(([\r\n]|^)(Fixes|Closes|Resolves) issue #?\d+([\r\n]|$))|(^Update issue #?\d+:?([\r\n]|$)))
+(\d+)
