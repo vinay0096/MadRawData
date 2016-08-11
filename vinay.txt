@@ -1,0 +1,468 @@
+/Indexer Sample
+class Program
+   {
+       static void Main(string[] args)
+       {
+           IndexerSample();
+       }
+       static void IndexerSample()
+       {
+           Indexer indx = new Indexer();
+           indx[1] = "Test";
+           indx[2] = "abc";
+           indx[6] = "def";
+           for (int i = 0; i < 10; i++)
+           {
+               Console.WriteLine(indx[i]);
+           }
+       }
+
+
+   }
+   class Indexer
+   {
+       private string[] myData = new string[10];
+       public Indexer()
+       {
+           for (int i = 0; i < 10; i++)
+           {
+               myData[i] = "NA";
+           }
+       }
+       public string this[int pos]
+       {
+           get
+           {
+               return myData[pos];
+           }
+           set
+           {
+               myData[pos] = value;
+           }
+       }
+   }
+
+satya [11:05 AM]  
+//ArrayList Sample
+static void Main(string[] args)
+       {
+           ArrayAndArrayList();
+           Console.ReadKey();
+       }
+       static void ArrayAndArrayList()
+       {
+           int[] arr = { 1, 2, 3, 4, 5 };
+           ArrayList arrayList = new ArrayList();
+           arrayList.Add(1);
+           arrayList.Add("abc");
+           arrayList.Add("2");
+           int a = arr[0]; // no unboxing is required
+           a = (int)arrayList[0];//unboxing is required
+           foreach (var item in arrayList)
+           {
+               Console.WriteLine(item);
+           }
+       }
+
+satya [11:19 AM]  
+//Hashtable Sample
+static void Main(string[] args)
+       {
+           HashTable();
+           Console.ReadKey();
+       }
+       static void HashTable()
+       {
+           Hashtable ht = new Hashtable();
+           ht.Add("abc", 10000);
+           ht.Add("def", 20000);
+           int abc = (int)ht["abc"]; //unboxing is required
+           Console.WriteLine(ht["abc"]);
+           Console.WriteLine(ht.ContainsKey("abc"));
+       }
+
+satya [11:41 AM]  
+//IEnumerableAndIEnumerator Sample
+static void Main(string[] args)
+       {
+           EnumerableAndEnumerator();
+           Console.ReadKey();
+       }
+       static void EnumerableAndEnumerator()
+       {
+           List<int> list = new List<int> { 1, 2, 3, 4, 2, 5, 3, 1, 6, 1 };
+           var enumerable = list;// Enumerable.Range(1, 10);// list;
+           foreach (var item in enumerable)
+           {
+               Console.WriteLine(String.Format("From Enumerable :{0}",item));
+               if (item > 3)
+               {
+                   MoveToEnumerable(enumerable);
+               }
+           }
+           IEnumerator<int> enumerator = enumerable.GetEnumerator();
+           while (enumerator.MoveNext())
+           {
+               Console.WriteLine(String.Format("From Enumerator :{0}",enumerator.Current));
+
+               if (enumerator.Current > 3)
+               {
+                   MoveToEnumerator(enumerator);
+               }
+           }
+       }
+       private static void MoveToEnumerable(IEnumerable<int> enumerable)
+       {
+           foreach (var item in enumerable)
+           {
+               Console.WriteLine($"From Enumerable2 :{item}");
+           }
+       }
+
+       private static void MoveToEnumerator(IEnumerator<int> enumerator)
+       {
+           //enumerator.Reset();
+           while (enumerator.MoveNext())
+           {
+               Console.WriteLine($"From Enumerator2 :{enumerator.Current}");
+           }
+       }
+
+[11:42]  
+static void Main(string[] args)
+       {
+           EnumerableAndEnumerator();
+           Console.ReadKey();
+       }
+       static void EnumerableAndEnumerator()
+       {
+           List<int> list = new List<int> { 1, 2, 3, 4, 2, 5, 3, 1, 6, 1 };
+           var enumerable = list;// Enumerable.Range(1, 10);// list;
+           foreach (var item in enumerable)
+           {
+               Console.WriteLine(String.Format("From Enumerable :{0}",item));
+               if (item > 3)
+               {
+                   MoveToEnumerable(enumerable);
+               }
+           }
+           IEnumerator<int> enumerator = enumerable.GetEnumerator();
+           while (enumerator.MoveNext())
+           {
+               Console.WriteLine(String.Format("From Enumerator :{0}",enumerator.Current));
+
+               if (enumerator.Current > 3)
+               {
+                   MoveToEnumerator(enumerator);
+               }
+           }
+       }
+       private static void MoveToEnumerable(IEnumerable<int> enumerable)
+       {
+           foreach (var item in enumerable)
+           {
+               Console.WriteLine(String.Format("From Enumerable :{0}", item));
+           }
+       }
+
+       private static void MoveToEnumerator(IEnumerator<int> enumerator)
+       {
+           //enumerator.Reset();
+           while (enumerator.MoveNext())
+           {
+               Console.WriteLine(String.Format("From Enumerator :{0}", enumerator.Current));
+           }
+       }
+
+satya [2:38 PM]  
+//Generic Class Sample
+static void Main(string[] args)
+       {
+
+
+           ServiceResponse<Employee> serviceResponse = GenericClassSample();
+           Console.WriteLine("Employee Details with Generic class");
+           Console.WriteLine(serviceResponse.Result.EmpId + " " + serviceResponse.Result.Name);
+           Console.ReadKey();
+       }
+
+       static ServiceResponse<Employee> GenericClassSample()
+       {
+           Employee emp = new Employee();
+           emp.EmpId = 5510;
+           emp.Name = "Abc";
+           return ServiceResponse<Employee>.Success(emp);
+       }
+   }
+   class ServiceResponse<T>
+   {
+       private ServiceResponse(T result)
+       {
+           Result = result;
+       }
+       public static ServiceResponse<T> Success(T result)
+       {
+           return new ServiceResponse<T>(result);
+       }
+       public T Result { get; private set; }
+   }
+
+   class Employee
+   {
+       public int EmpId { get; set; }
+       public string Name { get; set; }
+   }
+
+satya [2:53 PM]  
+//Generic Meethod Sample
+static void Main(string[] args)
+       {
+
+
+           int id = GenericMethod<int>(50);
+           Console.WriteLine(id);
+           string str = GenericMethod<string>("Test");
+           Console.WriteLine(str);
+           Employee emp = new Employee();
+           emp.EmpId = 5555;
+           emp.Name = "Xyz";
+           Employee empFromGenericMethod = GenericMethod<Employee>(emp);
+           Console.WriteLine(empFromGenericMethod.EmpId + " " +empFromGenericMethod.Name);
+
+           Console.ReadKey();
+       }
+
+       static T GenericMethod<T>(T input)
+       {
+           return input;
+       }
+
+[2:55]  
+class Employee
+   {
+       public int EmpId { get; set; }
+       public string Name { get; set; }
+   }
+
+satya [3:05 PM]  
+//Generic class with constraint
+static void Main(string[] args)
+       {
+
+           Employee emp = new Employee();
+           emp.EmpId = 5554;
+           emp.Name = "Abc";
+           ServiceResponse<Employee> response = ServiceResponse<Employee>.Success(emp);
+           Console.WriteLine(response.Result.EmpId + " " + response.Result.Name);
+           Dept dept = new Dept();
+           dept.Name = "IT";
+           dept.DeptId = 101;
+          // ServiceResponse<Dept> response = ServiceResponse<Dept>.Success(dept);
+           Console.ReadKey();
+       }
+   }
+   class ServiceResponse<T> where T :Employee
+   {
+       private ServiceResponse(T result)
+       {
+           Result = result;
+       }
+       public static ServiceResponse<T> Success(T result)
+       {
+           return new ServiceResponse<T>(result);
+       }
+       public T Result { get; private set; }
+   }
+
+   class Employee
+   {
+       public int EmpId { get; set; }
+       public string Name { get; set; }
+   }
+
+   class Dept
+   {
+       public int DeptId { get; set; }
+       public string Name { get; set; }
+   }
+
+satya [3:37 PM]  
+//List Sample
+static void Main(string[] args)
+       {
+
+           ListExample();
+           Console.ReadKey();
+       }
+       static void ListExample()
+       {
+           List<int> list = new List<int>();
+           list.Add(3);
+           list.Add(5);
+           list.Add("test");
+           foreach (var item in list)
+           {
+               Console.WriteLine(item);
+           }
+       }
+
+satya [4:11 PM]  
+// Dictionary Sample
+static void Main(string[] args)
+       {
+
+           DictionarySample();
+           Console.ReadKey();
+       }
+       static void DictionarySample()
+       {
+           Dictionary<string,int> dict = new Dictionary<string, int>();
+           dict.Add("abc",10);
+           dict.Add("def",100);
+           foreach (KeyValuePair<string,int> item in dict)
+           {
+               Console.WriteLine(item.Key + " " + item.Value);
+           }
+           int a = dict["xyz"]; //throws an exception as the key doesnt exist ion dict
+       }
+
+satya [4:31 PM]  
+// Custom sorting using IComparable
+ class Program
+   {
+       static void Main(string[] args)
+       {
+           ComparableAndComparer();
+           Console.ReadKey();
+       }
+       static void ComparableAndComparer()
+       {
+           List<Employee> empList = new List<Employee> {
+                                           new Employee { Id=5503, Name="Abc", Salary=10000},
+                                           new Employee { Id=5503, Name="AAA", Salary=10000},
+                                           new Employee { Id=5510, Name="Def", Salary=20000},
+                                           new Employee { Id=5505, Name="Xyz", Salary=30000}
+                                   };
+           empList.Sort();
+           Console.WriteLine("Employee Details with Default or IComparable sorting");
+           foreach (var employee in empList)
+           {
+               Console.WriteLine(string.Format("EmpId : {0}  Name: {1}  Salary {2}", employee.Id, employee.Name, employee.Salary));
+           }
+
+       }
+   }
+       class Employee
+   {
+       public int Id { get; set; }
+       public string Name { get; set; }
+       public int Salary { get; set; }
+
+       public int CompareTo(Employee other)
+       {
+           if (this.Id > other.Id)
+           {
+               return 1;
+           }
+           if (this.Id < other.Id)
+           {
+               return -1;
+           }
+           return 0;
+       }
+   }
+
+satya [4:41 PM]  
+//custom sorting using IComparer
+class Program
+   {
+       static void Main(string[] args)
+       {
+           ComparableAndComparer();
+           Console.ReadKey();
+       }
+       static void ComparableAndComparer()
+       {
+           List<Employee> empList = new List<Employee> {
+                                           new Employee { Id=5503, Name="Abc", Salary=10000},
+                                           new Employee { Id=5503, Name="AAA", Salary=10000},
+                                           new Employee { Id=5510, Name="Def", Salary=20000},
+                                           new Employee { Id=5505, Name="Xyz", Salary=30000}
+                                   };
+           empList.Sort(new EmployeeComparer());
+           Console.WriteLine("Employee Details with IComparaer sorting By Id");
+           foreach (var employee in empList)
+           {
+               Console.WriteLine(string.Format("EmpId : {0}  Name: {1}  Salary {2}", employee.Id, employee.Name, employee.Salary));
+           }
+           empList.Sort(new EmployeeComparerByName());
+           Console.WriteLine("Employee Details with IComparaer sorting By Name");
+           foreach (var employee in empList)
+           {
+               Console.WriteLine(string.Format("EmpId : {0}  Name: {1}  Salary {2}", employee.Id, employee.Name, employee.Salary));
+           }
+
+       }
+   }
+       class Employee
+   {
+       public int Id { get; set; }
+       public string Name { get; set; }
+       public int Salary { get; set; }
+   }
+   class EmployeeComparer : IComparer<Employee>
+   {
+       public int Compare(Employee x, Employee y)
+       {
+           if (x.Id > y.Id)
+           {
+               return 1;
+           }
+           if (x.Id < y.Id)
+           {
+               return -1;
+           }
+           return 0;
+       }
+   }
+   class EmployeeComparerByName : IComparer<Employee>
+   {
+       public int Compare(Employee x, Employee y)
+       {
+           return String.Compare(x.Name, y.Name);
+       }
+   }
+
+new messages
+satya [4:46 PM]  
+//custom sorting using IComparision
+class Program
+   {
+       static void Main(string[] args)
+       {
+           ComparableAndComparer();
+           Console.ReadKey();
+       }
+       static void ComparableAndComparer()
+       {
+           List<Employee> empList = new List<Employee> {
+                                           new Employee { Id=5503, Name="Abc", Salary=10000},
+                                           new Employee { Id=5503, Name="AAA", Salary=10000},
+                                           new Employee { Id=5510, Name="Def", Salary=20000},
+                                           new Employee { Id=5505, Name="Xyz", Salary=30000}
+                                   };
+           empList.Sort((x, y) => x.Id.CompareTo(y.Id));
+           Console.WriteLine("Employee Details with IComparision sorting");
+           foreach (var employee in empList)
+           {
+               Console.WriteLine(string.Format("EmpId : {0}  Name: {1}  Salary {2}", employee.Id, employee.Name, employee.Salary));
+           }
+
+       }
+   }
+       class Employee
+   {
+       public int Id { get; set; }
+       public string Name { get; set; }
+       public int Salary { get; set; }
+   }
